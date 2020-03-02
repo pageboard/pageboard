@@ -280,13 +280,14 @@ All.send = function(res, obj) {
 		delete obj.status;
 	}
 	var bundles = req.site.$bundles;
+	var bundlesKeys = Object.keys(bundles);
 	var metas = {};
 	if (obj.metas) obj.metas.forEach((meta) => {
 		if (meta.name) metas[meta.name] = meta;
 	});
 	obj = All.auth.filterResponse(req, obj, (schema, block) => {
-		if (block.type) {
-			var bundleType = Object.keys(bundles).find((key) => {
+		if (block.type && block.children) {
+			var bundleType = bundlesKeys.find((key) => {
 				return bundles[key].elements.includes(block.type);
 			});
 			if (bundleType) {
